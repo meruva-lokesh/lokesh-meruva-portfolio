@@ -1,0 +1,10 @@
+---
+// One icon from the page's sprite, e.g. <Icon name="arrow" />. Names are listed in src/data/icons.ts.
+interface Props {
+  name: string;
+  class?: string;
+}
+const { name, class: extra } = Astro.props;
+---
+
+<svg class:list={["ic", extra]}><use href={`#i-${name}`} /></svg>

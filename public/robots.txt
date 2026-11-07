@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lokesh-meruva-portfolio.vercel.app/sitemap.xml

@@ -1,0 +1,912 @@
+<!doctype html>
+<!-- Source for the Work card images (assets/images/lokesh/work-*.webp/.jpg).
+     Each .scene is one card at 765x440; render each at 2x (device scale factor 2) and save it as work-<id>.
+     Screen content uses real data from the repos: VEDA's node names and log format, the MCP demo data
+     (setup_demo.py), MULTIMODAL-RAG's UI labels and sample doc, and the traffic paper's results CSVs. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Work card scenes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --lime: #c8fd02;
+        --orange: #ff5100;
+        --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        display: grid;
+        gap: 24px;
+        padding: 24px;
+        background: #1b1b1b;
+        font-family: "Instrument Sans", sans-serif;
+      }
+      .scene {
+        position: relative;
+        width: 765px;
+        height: 440px;
+        overflow: hidden;
+        isolation: isolate;
+      }
+      .scene > * {
+        position: absolute;
+      }
+      .fill {
+        inset: 0;
+      }
+      /* film grain over the whole frame */
+      .grain {
+        inset: 0;
+        z-index: 50;
+        background: var(--noise);
+        opacity: 0.22;
+        mix-blend-mode: overlay;
+        pointer-events: none;
+      }
+      /* velvet: gradient shading + fine noise + soft rim */
+      .velvet {
+        background-image: var(--noise), radial-gradient(ellipse 40% 30% at 40% 30%, rgb(255 200 150 / 0.22), transparent 70%), var(--shade);
+        background-size: 150px, 100% 100%, 100% 100%;
+        background-blend-mode: overlay, normal, normal;
+      }
+      /* sunlight through a window, laid over everything */
+      .sun {
+        inset: -40px;
+        z-index: 40;
+        pointer-events: none;
+        filter: blur(16px);
+        mix-blend-mode: soft-light;
+      }
+      .shade-blobs {
+        z-index: 41;
+        pointer-events: none;
+        filter: blur(22px);
+        mix-blend-mode: multiply;
+      }
+
+      /* ---------- devices ---------- */
+      .stage {
+        perspective: 1700px;
+        filter: drop-shadow(14px 22px 14px rgb(60 14 0 / 0.55)) drop-shadow(4px 6px 4px rgb(40 10 0 / 0.35));
+      }
+      .d3 {
+        position: absolute;
+        transform-style: preserve-3d;
+      }
+      .slab,
+      .body {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+      }
+      .slab {
+        background: linear-gradient(135deg, #5a5a5e, #2a2a2c 60%, #4a4a4e);
+      }
+      .body {
+        background: #0b0b0c;
+        box-shadow:
+          inset 0 0 0 1.5px #4a4a4f,
+          inset 0 0 0 3px #0b0b0c;
+      }
+      .screen {
+        position: absolute;
+        overflow: hidden;
+      }
+      .screen::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(118deg, rgb(255 255 255 / 0.2) 0%, rgb(255 255 255 / 0.04) 38%, transparent 55%);
+        pointer-events: none;
+      }
+      .up {
+        text-transform: uppercase;
+        letter-spacing: -0.01em;
+      }
+      .mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      /* ================= 1. VEDA: laptop on a velvet pedestal ================= */
+      #veda .bg {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 55% 70% at 88% 8%, rgb(255 218 168 / 0.7), transparent 70%),
+          linear-gradient(180deg, #5d301a 0%, #94512a 48%, #c97f48 100%);
+      }
+      #veda .pedestal {
+        left: -70px;
+        top: 352px;
+        width: 905px;
+        height: 260px;
+        border-radius: 50% / 46%;
+        --shade: radial-gradient(ellipse 70% 60% at 50% 8%, #f39445 0%, #d8661f 38%, #a5410e 78%, #6e2606 100%);
+        box-shadow:
+          inset 0 5px 8px rgb(255 200 140 / 0.45),
+          0 -2px 0 rgb(255 170 100 / 0.25);
+      }
+      #veda .floor-shadow {
+        left: 150px;
+        top: 352px;
+        width: 520px;
+        height: 34px;
+        border-radius: 50%;
+        background: rgb(50 12 0 / 0.7);
+        filter: blur(9px);
+      }
+      #veda .laptop {
+        left: 140px;
+        top: 52px;
+        width: 470px;
+        height: 312px;
+        transform: perspective(1800px) rotateY(-17deg) rotateX(4deg);
+        transform-origin: 50% 100%;
+      }
+      #veda .lid {
+        position: absolute;
+        inset: 0 0 12px 0;
+        border-radius: 16px 16px 5px 5px;
+        background: #0a0a0b;
+        box-shadow:
+          inset 0 0 0 1.5px #3d3d42,
+          0 0 0 1px #1a1a1c;
+      }
+      #veda .lid .screen {
+        inset: 9px 9px 9px 9px;
+        border-radius: 8px 8px 2px 2px;
+      }
+      #veda .notch {
+        position: absolute;
+        z-index: 2;
+        left: 50%;
+        top: 9px;
+        width: 64px;
+        height: 9px;
+        transform: translateX(-50%);
+        border-radius: 0 0 6px 6px;
+        background: #0a0a0b;
+      }
+      #veda .base {
+        position: absolute;
+        left: -34px;
+        right: -34px;
+        bottom: 0;
+        height: 14px;
+        border-radius: 3px 3px 12px 12px;
+        background: linear-gradient(180deg, #e2e2e6 0%, #b7b7bd 35%, #85858b 70%, #5b5b60 100%);
+        box-shadow: 0 2px 3px rgb(0 0 0 / 0.4);
+      }
+      #veda .base::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 90px;
+        height: 5px;
+        transform: translateX(-50%);
+        border-radius: 0 0 6px 6px;
+        background: linear-gradient(#8b8b91, #a9a9ae);
+      }
+      .term {
+        position: absolute;
+        inset: 0;
+        padding: 12px 16px;
+        background: #0f1011;
+        color: #e9e9e4;
+        font-size: 9px;
+      }
+      .term-top {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid #26272a;
+        color: #8d8f94;
+        font-size: 7.5px;
+      }
+      .term-top .dots {
+        display: flex;
+        gap: 4px;
+      }
+      .term-top .dots i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #3a3b3f;
+      }
+      .term-top .live {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--lime);
+      }
+      .wave {
+        display: flex;
+        align-items: center;
+        gap: 1.5px;
+        height: 10px;
+      }
+      .wave b {
+        width: 1.6px;
+        border-radius: 1px;
+        background: var(--lime);
+      }
+      .term .big {
+        margin-top: 16px;
+        font-size: 28px;
+        line-height: 0.98;
+        font-weight: 500;
+        color: #f4f3ee;
+      }
+      .term .big em {
+        font-style: normal;
+        color: var(--lime);
+      }
+      .term .heard {
+        margin-top: 8px;
+        color: #8d8f94;
+        font-size: 7px;
+      }
+      .flow {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 14px;
+      }
+      .flow span {
+        padding: 2.5px 6px;
+        border: 1px solid #34363a;
+        border-radius: 20px;
+        color: #c9cac6;
+        font-size: 6.6px;
+        letter-spacing: 0.04em;
+      }
+      .flow span.on {
+        border-color: var(--lime);
+        color: #0f1011;
+        background: var(--lime);
+      }
+      .logs {
+        margin-top: 14px;
+        display: grid;
+        gap: 3.5px;
+        font-size: 6.6px;
+        color: #9a9c9f;
+      }
+      .logs b {
+        font-weight: 600;
+        color: #d7d8d3;
+      }
+      .logs .ok {
+        color: var(--lime);
+      }
+      .reply {
+        margin-top: 14px;
+        padding-top: 10px;
+        border-top: 1px solid #26272a;
+        font-size: 8px;
+        line-height: 1.35;
+        color: #f4f3ee;
+      }
+      .reply b {
+        color: var(--lime);
+        font-weight: 600;
+      }
+
+      /* ================= 2. MCP: tablet on a round velvet ottoman ================= */
+      #mcp .bg {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 50% 60% at 92% 12%, rgb(255 236 205 / 0.9), transparent 70%),
+          linear-gradient(165deg, #f0d2aa 0%, #e0a874 42%, #c47a45 100%);
+      }
+      #mcp .ottoman {
+        left: 25px;
+        top: 120px;
+        width: 790px;
+        height: 700px;
+        border-radius: 50%;
+        --shade: radial-gradient(circle at 46% 30%, #f06a2c 0%, #d9501c 34%, #b33a12 62%, #7c2208 92%);
+        box-shadow:
+          inset 0 8px 14px rgb(255 190 140 / 0.45),
+          inset -30px -40px 70px rgb(70 10 0 / 0.45);
+      }
+      #mcp .shade-blobs {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 18% 45% at 6% 30%, rgb(110 60 30 / 0.55), transparent 70%),
+          radial-gradient(ellipse 12% 30% at 20% 6%, rgb(110 60 30 / 0.45), transparent 70%),
+          radial-gradient(ellipse 10% 26% at 3% 80%, rgb(110 60 30 / 0.4), transparent 70%);
+      }
+      #mcp .stage {
+        left: 135px;
+        top: 40px;
+        width: 500px;
+        height: 360px;
+      }
+      #mcp .d3 {
+        left: 20px;
+        top: 30px;
+        width: 470px;
+        height: 330px;
+        border-radius: 26px;
+        transform: rotateX(50deg) rotateZ(-27deg);
+      }
+      #mcp .screen,
+      #traffic .screen {
+        inset: 11px;
+        border-radius: 16px;
+      }
+      .chat {
+        position: absolute;
+        inset: 0;
+        padding: 16px 18px;
+        background: #efebe2;
+        color: #111;
+        font-size: 9px;
+      }
+      .bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 7.5px;
+        color: #55534e;
+        letter-spacing: 0.04em;
+      }
+      .bar .dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        margin-right: 5px;
+        border-radius: 50%;
+        background: var(--orange);
+        vertical-align: -0.5px;
+      }
+      .chat .big {
+        margin-top: 16px;
+        font-size: 37px;
+        line-height: 0.92;
+        font-weight: 500;
+      }
+      .tool {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        font-size: 8px;
+      }
+      .tool .name {
+        padding: 3px 8px;
+        border-radius: 20px;
+        background: #111;
+        color: var(--lime);
+      }
+      .tool .chip {
+        padding: 3px 7px;
+        border: 1px solid #b9b5ab;
+        border-radius: 20px;
+        color: #333;
+      }
+      .tool .arrow {
+        color: #77746c;
+      }
+      .cols {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 16px;
+        border-top: 1px solid #c9c5bb;
+      }
+      .cols div {
+        padding: 9px 10px 0 0;
+      }
+      .cols div + div {
+        padding-left: 10px;
+        border-left: 1px solid #c9c5bb;
+      }
+      .cols small {
+        display: block;
+        font-size: 6.6px;
+        letter-spacing: 0.08em;
+        color: #77746c;
+      }
+      .cols strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 1.05;
+      }
+      .cols p {
+        margin-top: 4px;
+        font-size: 7px;
+        color: #55534e;
+        line-height: 1.35;
+      }
+      .answer {
+        margin-top: 14px;
+        padding: 9px 11px;
+        border-radius: 10px;
+        background: #e3dfd4;
+        font-size: 8.4px;
+        line-height: 1.45;
+        color: #2a2925;
+      }
+      .answer b {
+        font-weight: 600;
+        color: #111;
+      }
+      .ball {
+        position: absolute;
+        right: 26px;
+        top: 74px;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: #111;
+      }
+
+      /* ================= 3. MULTIMODAL-RAG: phone on a velvet armrest ================= */
+      #rag .bg {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 45% 60% at 82% 30%, rgb(255 240 215 / 0.95), transparent 72%),
+          linear-gradient(120deg, #c98a52 0%, #ebc79c 60%, #f2dcc0 100%);
+      }
+      #rag .arm {
+        left: -150px;
+        top: -60px;
+        width: 760px;
+        height: 620px;
+        border-radius: 48% 52% 46% 54% / 50% 46% 54% 50%;
+        --shade: radial-gradient(ellipse 60% 55% at 58% 42%, #e98a2e 0%, #d06d18 40%, #a9500d 72%, #6f2f05 100%);
+        box-shadow:
+          inset -10px 0 18px rgb(255 200 130 / 0.35),
+          18px 10px 40px rgb(80 30 0 / 0.35);
+      }
+      #rag .seam {
+        left: -110px;
+        top: -20px;
+        width: 680px;
+        height: 540px;
+        border-radius: 48% 52% 46% 54% / 50% 46% 54% 50%;
+        border: 2px solid rgb(120 50 5 / 0.35);
+        filter: blur(1px);
+        box-shadow: 0 2px 0 rgb(255 190 120 / 0.25);
+      }
+      #rag .shade-blobs {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 7% 28% at 74% 12%, rgb(120 70 30 / 0.4), transparent 70%),
+          radial-gradient(ellipse 6% 22% at 86% 30%, rgb(120 70 30 / 0.35), transparent 70%),
+          radial-gradient(ellipse 5% 20% at 95% 8%, rgb(120 70 30 / 0.35), transparent 70%),
+          radial-gradient(ellipse 8% 18% at 66% 34%, rgb(120 70 30 / 0.3), transparent 70%);
+      }
+      #rag .stage {
+        left: 160px;
+        top: 20px;
+        width: 420px;
+        height: 400px;
+      }
+      #rag .d3 {
+        left: 120px;
+        top: -10px;
+        width: 205px;
+        height: 420px;
+        border-radius: 36px;
+        transform: rotateX(48deg) rotateZ(-56deg);
+      }
+      #rag .screen {
+        inset: 8px;
+        border-radius: 29px;
+      }
+      #rag .island {
+        position: absolute;
+        z-index: 3;
+        left: 50%;
+        top: 17px;
+        width: 58px;
+        height: 16px;
+        transform: translateX(-50%);
+        border-radius: 10px;
+        background: #0b0b0c;
+      }
+      .doc {
+        position: absolute;
+        inset: 0;
+        padding: 36px 14px 14px;
+        background: #f1eee7;
+        color: #121212;
+        font-size: 7.5px;
+      }
+      .doc .bar {
+        font-size: 6.5px;
+      }
+      .doc .ready {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 2px 6px;
+        border-radius: 10px;
+        background: #dcebd2;
+        color: #2c5a20;
+        font-size: 6px;
+      }
+      .doc .big {
+        margin-top: 10px;
+        font-size: 23px;
+        line-height: 0.95;
+        font-weight: 500;
+      }
+      .doc .ans {
+        margin-top: 10px;
+        line-height: 1.4;
+        color: #3d3b37;
+      }
+      .doc .ans b {
+        color: #111;
+        font-weight: 600;
+      }
+      .doc h6 {
+        margin-top: 10px;
+        font-size: 6.6px;
+        letter-spacing: 0.08em;
+        color: #77746c;
+        font-weight: 600;
+      }
+      .figure {
+        margin-top: 5px;
+        padding: 8px;
+        border-radius: 8px;
+        background: #fff;
+        border: 1px solid #ddd8cd;
+      }
+      .figure .tri {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+      }
+      .figure .tri span {
+        padding: 6px 3px;
+        border-radius: 5px;
+        text-align: center;
+        font-size: 5.6px;
+        font-weight: 600;
+        color: #111;
+      }
+      .figure .cap {
+        margin-top: 5px;
+        font-size: 5.6px;
+        color: #77746c;
+      }
+      .src {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 3px 7px;
+        border-radius: 10px;
+        background: #111;
+        color: #f1eee7;
+        font-size: 6.2px;
+      }
+      .ask {
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        bottom: 14px;
+        padding: 7px 10px;
+        border-radius: 14px;
+        background: #fff;
+        border: 1px solid #ddd8cd;
+        color: #9a968c;
+        font-size: 6.4px;
+      }
+
+      /* ================= 4. Traffic: tablet on a terracotta chair ================= */
+      #traffic .bg {
+        inset: 0;
+        background:
+          radial-gradient(ellipse 50% 60% at 78% 10%, rgb(255 205 160 / 0.45), transparent 70%),
+          linear-gradient(170deg, #b4623d 0%, #9c5131 55%, #7d3f25 100%);
+      }
+      #traffic .seat {
+        left: -60px;
+        top: 70px;
+        width: 760px;
+        height: 520px;
+        border-radius: 34% 40% 0 0 / 30% 34% 0 0;
+        transform: rotate(-9deg);
+        --shade: radial-gradient(ellipse 60% 60% at 50% 30%, #e4743a 0%, #cc5a25 40%, #a74418 75%, #7a2e0e 100%);
+        box-shadow:
+          inset 0 8px 14px rgb(255 180 130 / 0.4),
+          0 -6px 30px rgb(60 15 0 / 0.35);
+      }
+      #traffic .stage {
+        left: 160px;
+        top: 30px;
+        width: 500px;
+        height: 360px;
+      }
+      #traffic .d3 {
+        left: 10px;
+        top: 20px;
+        width: 470px;
+        height: 330px;
+        border-radius: 26px;
+        transform: rotateX(46deg) rotateZ(-33deg);
+      }
+      .paper {
+        position: absolute;
+        inset: 0;
+        padding: 16px 18px;
+        background: #c9caa9;
+        color: #111;
+        font-size: 9px;
+      }
+      .paper .bar {
+        color: #3f4033;
+      }
+      .paper .row {
+        display: grid;
+        grid-template-columns: 1fr 1.25fr;
+        gap: 18px;
+        margin-top: 14px;
+      }
+      .paper .big {
+        font-size: 64px;
+        line-height: 0.9;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+      .paper .big + p {
+        margin-top: 6px;
+        font-size: 7.5px;
+        letter-spacing: 0.08em;
+        color: #3f4033;
+      }
+      .cells {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        margin-top: 18px;
+        border-top: 1px solid #8f9074;
+      }
+      .cells div {
+        padding: 9px 10px 0 0;
+      }
+      .cells div + div {
+        padding-left: 10px;
+        border-left: 1px solid #8f9074;
+      }
+      .cells strong {
+        display: block;
+        font-size: 17px;
+        font-weight: 500;
+      }
+      .cells small {
+        display: block;
+        margin-top: 3px;
+        font-size: 6.6px;
+        letter-spacing: 0.08em;
+        color: #3f4033;
+      }
+      .bars {
+        display: grid;
+        gap: 5.5px;
+        font-size: 6.8px;
+      }
+      .bars div {
+        display: grid;
+        grid-template-columns: 62px 1fr 22px;
+        align-items: center;
+        gap: 6px;
+      }
+      .bars i {
+        height: 5px;
+        border-radius: 3px;
+        background: #111;
+      }
+      .bars .best i {
+        background: var(--orange);
+      }
+      .bars .best {
+        font-weight: 600;
+      }
+      .bars em {
+        font-style: normal;
+        text-align: right;
+      }
+      .bars .tag {
+        font-size: 5.6px;
+        color: #55563f;
+        letter-spacing: 0.06em;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ======================= 1. VEDA ======================= -->
+    <section class="scene" id="veda">
+      <div class="bg"></div>
+      <div class="pedestal velvet"></div>
+      <div class="floor-shadow"></div>
+      <div class="laptop">
+        <div class="lid">
+          <div class="notch"></div>
+          <div class="screen">
+            <div class="term">
+              <div class="term-top">
+                <span class="dots"><i></i><i></i><i></i></span>
+                <span class="mono">VEDA — start_veda.bat</span>
+                <span class="live mono"
+                  ><span class="wave"
+                    ><b style="height: 4px"></b><b style="height: 8px"></b><b style="height: 10px"></b><b style="height: 6px"></b
+                    ><b style="height: 9px"></b><b style="height: 4px"></b><b style="height: 7px"></b><b style="height: 3px"></b></span
+                  >listening</span
+                >
+              </div>
+              <p class="big up">“Hey <em>VEDA</em>, find two new papers on RAG evaluation.”</p>
+              <p class="heard mono">[STT] heard (te+en): “last time manam RAG evaluation gurinchi matladukunnam kada…”</p>
+              <div class="flow mono">
+                <span class="on">recall</span><span class="on">route</span><span class="on">plan</span><span class="on">search</span
+                ><span class="on">read</span><span class="on">synthesize</span><span class="on">reflect</span><span class="on">write</span
+                ><span>retain</span>
+              </div>
+              <div class="logs mono">
+                <p><b>[NODE: hindsight_recall]</b> 3 memories about you · RAGAS, faithfulness</p>
+                <p><b>[NODE: searcher]</b> Searching: 'RAG evaluation benchmarks 2026'</p>
+                <p><b>[NODE: reader]</b> Extracting: arxiv.org/abs/…</p>
+                <p><b>[NODE: reflector]</b> <span class="ok">quality gate passed ✓</span></p>
+              </div>
+              <p class="reply"><b>VEDA ›</b> Found 2 papers. You looked at RAGAS faithfulness last week, so I compared both against it.</p>
+            </div>
+          </div>
+        </div>
+        <div class="base"></div>
+      </div>
+      <div class="sun" style="background: linear-gradient(112deg, transparent 52%, rgb(255 236 200 / 0.55) 56% 64%, transparent 68% 72%, rgb(255 236 200 / 0.45) 75% 82%, transparent 86%)"></div>
+      <div class="grain"></div>
+    </section>
+
+    <!-- ======================= 2. Multi-Tool MCP ======================= -->
+    <section class="scene" id="mcp">
+      <div class="bg"></div>
+      <div class="ottoman velvet"></div>
+      <div class="stage">
+        <div class="d3">
+          <div class="slab" style="transform: translateZ(-7px)"></div>
+          <div class="slab" style="transform: translateZ(-5.5px)"></div>
+          <div class="slab" style="transform: translateZ(-4px)"></div>
+          <div class="slab" style="transform: translateZ(-2.5px)"></div>
+          <div class="slab" style="transform: translateZ(-1px)"></div>
+          <div class="body"></div>
+          <div class="screen">
+            <div class="chat">
+              <div class="bar up"><span><span class="dot"></span>multi-tool · MCP server</span><span>9 tools</span></div>
+              <p class="big up">Give me a full<br />business overview.</p>
+              <div class="ball"></div>
+              <div class="tool mono">
+                <span class="name">smart_query</span><span class="arrow">→</span><span class="chip">sheets_read</span
+                ><span class="chip">db_query</span><span class="chip">pdf_search</span>
+              </div>
+              <div class="cols">
+                <div>
+                  <small class="up">SQLite</small><strong>10 customers</strong>
+                  <p>5 active · 3 leads · 2 inactive</p>
+                </div>
+                <div>
+                  <small class="up">Google Sheets</small><strong>Leads synced</strong>
+                  <p>New rows land with sheets_write</p>
+                </div>
+                <div>
+                  <small class="up">PDF invoices</small><strong>INV-2024-001</strong>
+                  <p>Alice Sharma · due 15 Apr 2024</p>
+                </div>
+              </div>
+              <p class="answer">
+                <b>Claude:</b> You have 5 active customers worth 238,000, 3 open leads (Carol, Frank, Isha) and one invoice,
+                INV-2024-001 for Alice Sharma, due on 15 April.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shade-blobs fill" style="inset: 0"></div>
+      <div class="sun" style="background: linear-gradient(118deg, transparent 58%, rgb(255 240 210 / 0.6) 62% 70%, transparent 74%)"></div>
+      <div class="grain"></div>
+    </section>
+
+    <!-- ======================= 3. MULTIMODAL-RAG ======================= -->
+    <section class="scene" id="rag">
+      <div class="bg"></div>
+      <div class="arm velvet"></div>
+      <div class="seam"></div>
+      <div class="stage">
+        <div class="d3">
+          <div class="slab" style="transform: translateZ(-6px)"></div>
+          <div class="slab" style="transform: translateZ(-4.5px)"></div>
+          <div class="slab" style="transform: translateZ(-3px)"></div>
+          <div class="slab" style="transform: translateZ(-1.5px)"></div>
+          <div class="body"></div>
+          <div class="island"></div>
+          <div class="screen">
+            <div class="doc">
+              <div class="bar up"><span>Universal Document Chat</span><span>RAG</span></div>
+              <span class="ready">✓ Ready to chat!</span>
+              <p class="big up">What are the 3 types of machine learning?</p>
+              <p class="ans">
+                <b>Supervised</b> learns from labelled data, <b>unsupervised</b> finds hidden patterns, and
+                <b>reinforcement</b> learns from rewards.
+              </p>
+              <h6 class="up">Relevant images</h6>
+              <div class="figure">
+                <div class="tri">
+                  <span style="background: #ffd9c4">Supervised</span><span style="background: #e4f0c4">Unsupervised</span
+                  ><span style="background: #d9e2f2">Reinforcement</span>
+                </div>
+                <p class="cap">Page 2 • Score: 0.83</p>
+              </div>
+              <span class="src">Sources: sample.pdf · p. 2</span>
+              <div class="ask">Ask a question about your documents...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shade-blobs fill" style="inset: 0"></div>
+      <div class="sun" style="background: linear-gradient(105deg, transparent 30%, rgb(255 236 205 / 0.5) 36% 46%, transparent 52%)"></div>
+      <div class="grain"></div>
+    </section>
+
+    <!-- ======================= 4. Traffic severity ======================= -->
+    <section class="scene" id="traffic">
+      <div class="bg"></div>
+      <div class="seat velvet"></div>
+      <div class="stage">
+        <div class="d3">
+          <div class="slab" style="transform: translateZ(-7px)"></div>
+          <div class="slab" style="transform: translateZ(-5.5px)"></div>
+          <div class="slab" style="transform: translateZ(-4px)"></div>
+          <div class="slab" style="transform: translateZ(-2.5px)"></div>
+          <div class="slab" style="transform: translateZ(-1px)"></div>
+          <div class="body"></div>
+          <div class="screen">
+            <div class="paper">
+              <div class="bar up"><span><span class="dot"></span>BIDA 2026 · Traffic severity</span><span>9 models</span></div>
+              <div class="row">
+                <div>
+                  <p class="big">92.2%</p>
+                  <p class="up">1D CNN · test accuracy</p>
+                </div>
+                <div class="bars">
+                  <p class="tag up">Accuracy by model (%)</p>
+                  <div class="best"><span>1D CNN</span><i style="width: 100%"></i><em>92.2</em></div>
+                  <div><span>Random Forest</span><i style="width: 91%"></i><em>91.2</em></div>
+                  <div><span>VGG16</span><i style="width: 86%"></i><em>90.4</em></div>
+                  <div><span>VGG19</span><i style="width: 83%"></i><em>89.8</em></div>
+                  <div><span>ResNet50</span><i style="width: 77%"></i><em>88.5</em></div>
+                  <div><span>Decision Tree</span><i style="width: 69%"></i><em>86.7</em></div>
+                  <div><span>SVM</span><i style="width: 67%"></i><em>86.2</em></div>
+                  <div><span>Logistic Reg.</span><i style="width: 53%"></i><em>83.3</em></div>
+                  <div><span>Naive Bayes</span><i style="width: 37%"></i><em>79.9</em></div>
+                </div>
+              </div>
+              <div class="cells">
+                <div><strong>5 ML + 4 DL</strong><small class="up">models compared</small></div>
+                <div><strong>19 features</strong><small class="up">engineered from 12 inputs</small></div>
+                <div><strong>&lt; 0.1 s</strong><small class="up">per prediction</small></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shade-blobs fill" style="inset: 0; background: radial-gradient(ellipse 10% 40% at 4% 20%, rgb(70 25 5 / 0.5), transparent 70%), radial-gradient(ellipse 14% 22% at 16% 4%, rgb(70 25 5 / 0.45), transparent 70%)"></div>
+      <div class="sun" style="background: linear-gradient(120deg, transparent 55%, rgb(255 225 190 / 0.45) 60% 68%, transparent 73%)"></div>
+      <div class="grain"></div>
+    </section>
+  </body>
+</html>

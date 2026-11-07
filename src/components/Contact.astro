@@ -1,0 +1,34 @@
+---
+import { site, contact } from "../data/site";
+import Icon from "./Icon.astro";
+---
+
+<footer class="contact" id="contact">
+  <div class="wrap contact-grid">
+    <div class="contact-copy">
+      <h2 class="h2" data-reveal>{contact.heading}</h2>
+      <p data-reveal>{contact.text}</p>
+    </div>
+    <!-- No form: email needs no third-party service, so nothing can silently fail -->
+    <div class="contact-reach" data-reveal>
+      <a class="email" href={`mailto:${site.email}`}>{site.email}</a>
+      <div class="contact-actions">
+        <a class="btn btn-light" href={`mailto:${site.email}?subject=Hello%20Lokesh`}>Email me<Icon name="arrow" /></a>
+        <button class="btn btn-outline-dark copy-email" type="button" data-email={site.email}>
+          <Icon name="copy" /><span>Copy email</span>
+        </button>
+      </div>
+      <p class="copy-note" role="status" aria-live="polite"></p>
+      <ul class="social social-dark">
+        <li><a href={site.links.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a></li>
+        <li><a href={site.links.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" /></a></li>
+        <li><a href={site.links.huggingface} target="_blank" rel="noopener" aria-label="Hugging Face"><Icon name="hf" /></a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="giant-name" aria-hidden="true" data-impeccable-ignore="low-contrast">{site.name}</p>
+  <div class="wrap footer-base">
+    <p>© 2026 {site.name}</p>
+    <a class="text-link" href="#home">Back to top<Icon name="up" /></a>
+  </div>
+</footer>

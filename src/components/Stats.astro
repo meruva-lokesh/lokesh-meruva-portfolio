@@ -1,0 +1,16 @@
+---
+import { stats } from "../data/site";
+---
+
+<section class="stats" aria-label="At a glance">
+  <dl class="wrap stats-row">
+    {
+      stats.map((s) => (
+        <div>
+          <dt>{s.label}</dt>
+          <dd data-count={s.value} data-suffix={s.suffix}>{s.value}{s.suffix}</dd>
+        </div>
+      ))
+    }
+  </dl>
+</section>

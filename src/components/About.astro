@@ -1,0 +1,21 @@
+---
+import { about } from "../data/site";
+---
+
+<section class="about section" id="about">
+  <div class="wrap about-grid">
+    <div class="about-copy">
+      <h2 class="h2" data-reveal>{about.heading}</h2>
+      <p class="lead" data-reveal>{about.lead}</p>
+      <div class="prose" data-reveal>
+        {about.paragraphs.map((text) => <p>{text}</p>)}
+      </div>
+    </div>
+    <figure class="about-photo" data-reveal>
+      <picture>
+        <source srcset={about.photo.webp} type="image/webp" />
+        <img src={about.photo.jpg} alt={about.photo.alt} width="725" height="812" loading="lazy" decoding="async" />
+      </picture>
+    </figure>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+---
+import { expertise } from "../data/site";
+---
+
+<section class="expertise section" id="expertise">
+  <div class="wrap">
+    <h2 class="h2" data-reveal>{expertise.heading}</h2>
+    <div class="bento">
+      {
+        expertise.cells.map((cell) => (
+          <article class:list={["cell", { "cell-wide": cell.wide }]} data-reveal>
+            <img src={cell.image} alt="" width="552" height="257" loading="lazy" />
+            <div>
+              <h3>{cell.title}</h3>
+              <p>{cell.text}</p>
+              <ul class="tags">
+                {cell.tags.map((tag) => (
+                  <li>{tag}</li>
+                ))}
+              </ul>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+    <p class="also" data-reveal><span>Also in my toolkit:</span> {expertise.also}</p>
+  </div>
+</section>

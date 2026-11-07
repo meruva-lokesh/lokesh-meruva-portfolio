@@ -1,0 +1,85 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
+import Sprite from "../components/Sprite.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Stats from "../components/Stats.astro";
+import About from "../components/About.astro";
+import Expertise from "../components/Expertise.astro";
+import Work from "../components/Work.astro";
+import Credentials from "../components/Credentials.astro";
+import Writing from "../components/Writing.astro";
+import Contact from "../components/Contact.astro";
+import { site, about } from "../data/site";
+
+const posts = (await getCollection("writing")).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf() || a.data.order - b.data.order);
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${site.url}/#person`,
+      name: site.name,
+      jobTitle: "AI/ML Engineer",
+      url: `${site.url}/`,
+      image: site.url + about.photo.jpg,
+      email: `mailto:${site.email}`,
+      address: { "@type": "PostalAddress", addressLocality: "Nellore", addressRegion: "Andhra Pradesh", addressCountry: "IN" },
+      alumniOf: { "@type": "CollegeOrUniversity", name: "KL University" },
+      knowsAbout: ["Agentic AI", "Multi-agent systems", "LangGraph", "Retrieval-augmented generation", "Model Context Protocol", "FastAPI", "Deep learning"],
+      sameAs: [site.links.github, site.links.linkedin, site.links.huggingface],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${site.url}/#website`,
+      url: `${site.url}/`,
+      name: site.name,
+      publisher: { "@id": `${site.url}/#person` },
+    },
+  ],
+};
+---
+
+<Base
+  title={site.title}
+  description={site.description}
+  path="/"
+  ogType="website"
+  ogTitle={site.title}
+  ogDescription={site.ogDescription}
+  ogImage="/assets/images/lokesh/og-card.jpg"
+  ogImageMeta
+  jsonLd={jsonLd}
+>
+  <Fragment slot="head">
+    <link rel="preload" as="image" href="/assets/images/lokesh/hero-cutout.webp" type="image/webp" fetchpriority="high" />
+    <script is:inline>
+      // Lets the CSS hide intro states only when the script will run them.
+      document.documentElement.classList.add("js");
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");
+      // If site.js never runs, show everything rather than leave reveal-hidden content invisible.
+      setTimeout(function () {
+        if (!window.__siteReady) document.documentElement.classList.remove("motion");
+      }, 3000);
+    </script>
+  </Fragment>
+
+  <!-- Icons: Phosphor (MIT) and the Hugging Face logo from Simple Icons (CC0) -->
+  <Sprite />
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="top-sentinel" aria-hidden="true"></div>
+  <Header />
+  <main id="main">
+    <Hero />
+    <Stats />
+    <About />
+    <Expertise />
+    <Work />
+    <Credentials />
+    <Writing posts={posts} />
+  </main>
+  <Contact />
+  <script src="../scripts/site.js"></script>
+</Base>

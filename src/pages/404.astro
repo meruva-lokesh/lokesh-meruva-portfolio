@@ -1,0 +1,25 @@
+---
+import Base from "../layouts/Base.astro";
+import Sprite from "../components/Sprite.astro";
+import Icon from "../components/Icon.astro";
+import { site } from "../data/site";
+---
+
+<Base title={`Page not found | ${site.name}`} noindex>
+  <Sprite only={["back"]} />
+  <header class="site-header">
+    <div class="wrap header-row">
+      <a class="logo" href="/" aria-label={`${site.name}, home`}>Lokesh<span>.</span></a>
+    </div>
+  </header>
+  <main class="lost">
+    <h1 class="visually-hidden">Page not found</h1>
+    <!-- Same arc as the home page hero -->
+    <svg viewBox="-620 0 1240 420" aria-hidden="true" focusable="false">
+      <path id="arch-path" d="M -536.5 531.3 A 600 600 0 0 1 536.5 531.3" fill="none"></path>
+      <text font-size="360" text-anchor="middle"><textPath href="#arch-path" startOffset="50%">404</textPath></text>
+    </svg>
+    <p>This page doesn't exist. It may have moved when the site was rebuilt.</p>
+    <a class="btn" href="/"><Icon name="back" />Back to the home page</a>
+  </main>
+</Base>

@@ -1,0 +1,11 @@
+---
+// Inline icon sprite. Pass `only` to include just the icons a page uses.
+import { icons } from "../data/icons";
+
+interface Props {
+  only?: string[];
+}
+const names = Astro.props.only ?? Object.keys(icons);
+---
+
+<svg class="sprite" aria-hidden="true">{names.map((name) => <symbol id={`i-${name}`} viewBox={icons[name].viewBox} set:html={icons[name].body} />)}</svg>

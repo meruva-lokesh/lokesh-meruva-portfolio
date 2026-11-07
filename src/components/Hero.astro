@@ -1,0 +1,39 @@
+---
+import { site, hero } from "../data/site";
+import Icon from "./Icon.astro";
+---
+
+<section class="hero" id="home">
+  <div class="wrap hero-stage">
+    <h1 class="hero-arch">
+      <span class="visually-hidden">{site.name}, AI/ML engineer</span>
+      <!-- The word arches over the portrait's head; geometry notes in site.css "Hero" -->
+      <svg viewBox="-620 0 1240 420" aria-hidden="true" focusable="false">
+        <path id="arch-path" d="M -536.5 531.3 A 600 600 0 0 1 536.5 531.3" fill="none"></path>
+        <text font-size="270" text-anchor="middle"><textPath href="#arch-path" startOffset="50%">{hero.archWord}</textPath></text>
+      </svg>
+    </h1>
+    <div class="hero-portrait">
+      <picture>
+        <source srcset="/assets/images/lokesh/hero-cutout.webp" type="image/webp" />
+        <img src="/assets/images/lokesh/hero-cutout.png" alt={`Portrait of ${site.name}`} width="750" height="880" fetchpriority="high" />
+      </picture>
+    </div>
+    <div class="hero-intro">
+      <p>{hero.intro}</p>
+      <div class="hero-cta">
+        <a class="btn" href="#work">See my work<Icon name="arrow" /></a>
+        <a class="text-link" href="#contact">Contact me</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <p><strong>{hero.status}</strong> {hero.statusDetail}</p>
+      <ul class="social">
+        <li><a href={site.links.github} target="_blank" rel="noopener" aria-label="GitHub"><Icon name="github" /></a></li>
+        <li><a href={site.links.linkedin} target="_blank" rel="noopener" aria-label="LinkedIn"><Icon name="linkedin" /></a></li>
+        <li><a href={site.links.huggingface} target="_blank" rel="noopener" aria-label="Hugging Face"><Icon name="hf" /></a></li>
+        <li><a href={`mailto:${site.email}`} aria-label="Email"><Icon name="mail" /></a></li>
+      </ul>
+    </div>
+  </div>
+</section>

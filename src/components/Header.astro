@@ -1,0 +1,35 @@
+---
+import { site } from "../data/site";
+import Icon from "./Icon.astro";
+
+// Section links in the top menu: [label, section id]
+const nav = [
+  ["About", "about"],
+  ["Expertise", "expertise"],
+  ["Work", "work"],
+  ["Credentials", "achievements"],
+  ["Writing", "writing"],
+  ["Contact", "contact"],
+];
+---
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <a class="logo" href="#home" aria-label={`${site.name}, back to top`}>Lokesh<span>.</span></a>
+    <nav class="site-nav" id="site-nav" aria-label="Main">
+      <ul>
+        {nav.map(([label, id]) => <li><a href={`#${id}`}>{label}</a></li>)}
+      </ul>
+      <ul class="nav-social">
+        <li><a href={site.links.github} target="_blank" rel="noopener"><Icon name="github" />GitHub</a></li>
+        <li><a href={site.links.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" />LinkedIn</a></li>
+        <li><a href={site.links.huggingface} target="_blank" rel="noopener"><Icon name="hf" />Hugging Face</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn-sm cv-btn" href={site.resume} download="Lokesh-Meruva-Resume.pdf"><Icon name="download" /><span>Download CV</span></a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav">
+      <Icon name="menu" class="ic-open" /><Icon name="close" class="ic-close" />
+      <span class="visually-hidden">Menu</span>
+    </button>
+  </div>
+</header>
