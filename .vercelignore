@@ -1,0 +1,9 @@
+# Not needed by the Vercel build (it installs and builds from package.json)
+node_modules
+dist
+.astro
+.claude
+.impeccable
+_design
+PHOTO-BRIEF.md
+PROJECT-IMAGES-BRIEF.md
